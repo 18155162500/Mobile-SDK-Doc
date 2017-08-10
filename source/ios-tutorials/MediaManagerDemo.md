@@ -11,9 +11,9 @@ keywords: [iOS mediaManager demo, mediaManager application, media download, down
 
 ---
 
-In this tutorial, you will learn how to use DJI Mobile SDK to interact with the file system on the SD card of the aircraft's camera by using `DJIMediaManager`. By the end of this tutorial, you will have an app that you can use to preview photos, play videos, download or delete files and so on.
+In this tutorial, you will learn how to use the `DJIMediaManager` to interact with the file system on the SD card of the aircraft's camera. By the end of this tutorial, you will have an app that you can use to preview photos, play videos, download or delete files and so on.
 
-In order for our app to manage photos and videos, however, it must first be able to take and record them. Fortunately, by using DJI iOS UI Library, you can implement shooting photos and recording videos functionalities easily with standard DJI Go UIs.
+In order for the app to manage photos and videos, however, it must first be able to take and record them. Fortunately, by using DJI iOS UI Library, you can implement shooting photos and recording videos functionalities easily with standard DJI Go UIs.
 
 You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/iOS-MediaManagerDemo).
 
