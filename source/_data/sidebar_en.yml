@@ -96,6 +96,9 @@
       title: "Camera Application"
       path: "/ios-tutorials/index.html"
     -
+      title: "Media Manager Application"
+      path: "/ios-tutorials/MediaManagerDemo.html"
+    -
       title: "Photo and Video Playback  Application"
       path: "/ios-tutorials/PlaybackDemo.html"
     -
