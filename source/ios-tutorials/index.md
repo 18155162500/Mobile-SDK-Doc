@@ -1,7 +1,7 @@
 ---
 title: Creating a Camera Application
-version: v4.1.1
-date: 2017-06-06
+version: v4.3.2
+date: 2017-10-17
 github: https://github.com/DJI-Mobile-SDK-Tutorials/iOS-FPVDemo
 keywords: [iOS FPVDemo, capture, shoot photo, take photo, record video, basic tutorial]
 ---
@@ -12,7 +12,7 @@ keywords: [iOS FPVDemo, capture, shoot photo, take photo, record video, basic tu
 
 This tutorial is designed for you to gain a basic understanding of the DJI Mobile SDK. It will implement the FPV view and two basic camera functionalities: **Take Photo** and **Record video**.
 
-You can download the tutorial's final sample code project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/iOS-FPVDemo).
+You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/iOS-FPVDemo).
    
 We use Mavic Pro as an example to make this demo.
 
@@ -23,6 +23,14 @@ Now, let's create a new project in Xcode, choose **Single View Application** tem
 Once the project is created, let's delete the "ViewController.h" and "ViewController.m" files created by Xcode by default. Create a new ViewController named "DJICameraViewController". 
 
 Now, let's install the **DJISDK.framework** in the Xcode project using Cocoapods and implement the SDK activation process in the "DJICameraViewController.m" file. If you are not familiar with the process of installing and activating DJI SDK, please check the Github source code and this tutorial: [Importing and Activating DJI SDK in Xcode Project](../application-development-workflow/workflow-integrate.html#Xcode-Project-Integration) for details.
+
+## Application Activation and Aircraft Binding in China
+
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
+
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
+
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).
 
 ## Implementing the First Person View
 
@@ -57,7 +65,7 @@ Add a UIView inside the View Controller. Then, add two UIButtons and one UISegme
 #import <DJISDK/DJISDK.h>
 #import <VideoPreviewer/VideoPreviewer.h>
 
-@interface DJICameraViewController ()<DJIVideoFeedListener, DJISDKManagerDelegate, DJIBaseProductDelegate, DJICameraDelegate>
+@interface DJICameraViewController ()<DJIVideoFeedListener, DJISDKManagerDelegate, DJICameraDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *recordBtn;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *changeWorkModeSegmentControl;
@@ -70,7 +78,7 @@ Add a UIView inside the View Controller. Then, add two UIButtons and one UISegme
 
 **2.** Furthermore, let's create the `setupVideoPreviewer` and `resetVideoPreviewer` methods as shown below:
 
-~~~
+~~~objc
 - (void)setupVideoPreviewer {
     [[VideoPreviewer instance] setView:self.fpvPreviewView];
     DJIBaseProduct *product = [DJISDKManager product];
@@ -110,7 +118,7 @@ If the product is **A3**, **N3**, **Matrice 600** or **Matrice 600 Pro**, we inv
 
 **3.** Once you finished the above steps, let's implement the `DJISDKManagerDelegate` delegate methods and the `viewWillDisappear` method as shown below:
 
-~~~
+~~~objc
 - (DJICamera*) fetchCamera {
     
     if (![DJISDKManager product]) {
@@ -126,7 +134,7 @@ If the product is **A3**, **N3**, **Matrice 600** or **Matrice 600 Pro**, we inv
     return nil;
 }
 
-#pragma mark DJIBaseProductDelegate Method
+#pragma mark DJISDKManagerDelegate Method
 - (void)productConnected:(DJIBaseProduct *)product
 {
     if(product){
@@ -222,7 +230,7 @@ Let's implement the `captureAction` IBAction method as shown below:
 
 In the code above, we firstly invoke the following method of DJICamera to set the shoot photo mode to `DJICameraShootPhotoModeSingle`:
 
-~~~
+~~~objc
 - (void)setShootPhotoMode:(DJICameraShootPhotoMode)mode withCompletion:(DJICompletionBlock)completion;
 ~~~
 

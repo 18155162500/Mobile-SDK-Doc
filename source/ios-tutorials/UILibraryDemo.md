@@ -1,8 +1,8 @@
 ---
 title: Getting Started with DJI UI Library
-version: v4.0.1
-date: 2017-06-01
-github: https://github.com/DJI-Mobile-SDK-Tutorials/xxxxx
+version: v4.3.2
+date: 2017-10-17
+github: https://github.com/DJI-Mobile-SDK-Tutorials/iOS-UILibraryDemo
 keywords: [UI Library, Default Layout, playback, preview photos and videos, download photos and videos, delete photos and videos]
 
 ---
@@ -13,7 +13,7 @@ keywords: [UI Library, Default Layout, playback, preview photos and videos, down
 
 In this tutorial, you will learn how to use DJI iOS UI Library and DJI iOS SDK to create a fully functioning mini-DJI Go app easily, with standard DJI Go UIs and functionalities. By the end of this tutorial you will have an app that you can use to show the camera FPV view, check aircraft status, shoot photos, record videos and so on.
 
-You can download the tutorial's final sample code project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/xxxxx).
+You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/iOS-UILibraryDemo).
 
 We use Mavic Pro and iPad Air as an example to make this demo. Let's get started!
 
@@ -24,6 +24,16 @@ DJI UI Library is a visual framework consisting of UI Elements. It helps you sim
 Additionally, with the ease of use, UILibrary let you focus more on business and application logic. 
 
 As DJI UI Library is built on top of DJI Mobile SDK and VideoPreviewer, you need to use it with them together in your application development.
+
+For an in depth learning on DJI UI Library, please go to the [UI Library Introduction](../introduction/ui_library_introduction.html).
+
+## Application Activation and Aircraft Binding in China
+
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
+
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
+
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).
 
 ## Importing DJI SDK and UILibrary with CocoaPods
 
@@ -37,8 +47,8 @@ Then replace the content of the **Podfile** with the followings:
 # platform :ios, '9.0'
 
 target 'UILibraryDemo' do
-  pod 'DJI-SDK-iOS', '~> 4.0.1'
-  pod 'DJI-UILibrary-iOS', '~> 4.0'
+  pod 'DJI-SDK-iOS', '~> 4.3'
+  pod 'DJI-UILibrary-iOS', '~> 4.3'
 end
 
 ~~~
@@ -54,8 +64,8 @@ If you install it successfully, you should get the messages similar to the follo
 ~~~
 Analyzing dependencies
 Downloading dependencies
-Installing DJI-SDK-iOS (4.0.1)
-Installing DJI-UILibrary-iOS (4.0.1.1.0.0)
+Installing DJI-SDK-iOS (4.3)
+Installing DJI-UILibrary-iOS (4.3)
 Generating Pods project
 Integrating client project
 
@@ -79,6 +89,14 @@ Pod installation complete! There are 2 dependencies from the Podfile and 2 total
 
  You can also check our previous tutorial [Integrate SDK into Application](../application-development-workflow/workflow-integrate.html#configure-build-settings) to learn how to configure the necessary Xcode project build settings.
 
+## Application Activation and Aircraft Binding in China
+
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
+
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
+
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).
+
 ## Implementing the DULDefaultLayoutViewController
 
 After you finish the steps above, let's try to implement the standard DJI Go UIs and functionalities using DJI UI Library with very few steps.
@@ -97,21 +115,21 @@ For more details of the storyboard settings, please check the tutorial's Github 
 
 Next, let's open the **DefaultLayoutViewController.h** file and import the **DJIUILibrary** header file and change the subclass to `DULDefaultLayoutViewController` as shown below:
 
-```
+~~~objc
 #import <DJIUILibrary/DJIUILibrary.h>
 
 @interface DefaultLayoutViewController : DULDefaultLayoutViewController
 
 @end
-```
+~~~
 
-The **DULDefaultLayoutViewController** is a viewController designed around 5 childViewController, and it's a fully functioning mini-DJI Go. It uses all the elements of the UILibrary to give you the foundation of your app. It includes status bar, take off, go home, camera actions buttons and camera settings, OSD dashboard, FPV live vide feed view, etc. The default layout is easily changeable and configurable.
+The **DULDefaultLayoutViewController** is a viewController designed around 5 child view controllers, and it's a fully functioning mini-DJI Go. It uses all the elements of the UILibrary to give you the foundation of your app. It includes status bar, take off, go home, camera actions buttons and camera settings, OSD dashboard, FPV live vide feed view, etc. The default layout is easily changeable and configurable.
 
 ## Application Registration
 
 Lastly, let's implement the application registration feature. Open the **DefaultLayoutViewController.m** file and implement the `DJISDKManagerDelegate` protocol as shown below:
 
-~~~
+~~~objc
 #import "DefaultLayoutViewController.h"
 
 @interface DefaultLayoutViewController ()<DJISDKManagerDelegate>
@@ -121,7 +139,7 @@ Lastly, let's implement the application registration feature. Open the **Default
 
 Furthermore, replace the @implementation part of **DefaultLayoutViewController** with the followings:
 
-~~~
+~~~objc
 @implementation DefaultLayoutViewController
 
 - (void)viewDidLoad

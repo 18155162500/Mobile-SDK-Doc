@@ -1,7 +1,7 @@
 ---
 title: DJI Bridge App Tutorial
-version: v4.1
-date: 2017-05-25
+version: v4.3.2
+date: 2017-10-17
 github: https://github.com/DJI-Mobile-SDK-Tutorials/DJIBridgeAppDemo
 keywords: [DJI Bridge App demo, remote debugging]
 ---
@@ -12,9 +12,9 @@ keywords: [DJI Bridge App demo, remote debugging]
 
 This tutorial is designed for you to gain a better understanding of the DJI Bridge App. It will teach you how to use it for app debugging by implementing the live video view and two basic camera functionalities: "Take Photo" and "Record video".
 
-You can download the <a href="https://github.com/dji-sdk/DJI-Bridge-App" target="_blank">DJI Bridge App Source Code</a>, build and install it on your mobile device.
+You can download and install the DJI SDK Bridge App from <a href="https://itunes.apple.com/us/app/sdk-bridge/id1263583917?ls=1&mt=8" target="_blank">App Store</a> to your mobile device.
 
-You can download the tutorial's final sample code project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/DJIBridgeAppDemo).
+You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/DJIBridgeAppDemo).
    
 ## Introduction
 
@@ -55,6 +55,14 @@ Now, let's create a new project in Xcode, choose **Single View Application** tem
 
 Once the project is created, let's import the **DJISDK.framework** to it. If you are not familiar with the process of importing and activating DJI SDK, please check this tutorial: [Importing and Activating DJI SDK in Xcode Project](../application-development-workflow/workflow-integrate.html#Xcode-Project-Integration) for details.
 
+## Application Activation and Aircraft Binding in China
+
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
+
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
+
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).
+
 ## Importing the VideoPreviewer
 
  You can check this tutorial [Creating a Camera Application](./index.html) to learn how to download and import the **VideoPreviewer** into your Xcode project.
@@ -78,7 +86,7 @@ Once the project is created, let's import the **DJISDK.framework** to it. If you
 #define WeakRef(__obj) __weak typeof(self) __obj = self
 #define WeakReturn(__obj) if(__obj ==nil)return;
 
-@interface DJICameraViewController ()<DJICameraDelegate, DJIBaseProductDelegate, DJIVideoFeedListener>
+@interface DJICameraViewController ()<DJICameraDelegate, DJISDKManagerDelegate, DJIVideoFeedListener>
 
 @property (nonatomic, strong) DJICamera* camera;
 @property (weak, nonatomic) IBOutlet UIButton *recordBtn;
@@ -118,7 +126,7 @@ Once the project is created, let's import the **DJISDK.framework** to it. If you
     return nil;
 }
 
-#pragma mark DJIBaseProductDelegate Method
+#pragma mark DJISDKManagerDelegate Method
 
 - (void)productConnected:(DJIBaseProduct *)product
 {
@@ -383,7 +391,7 @@ Once you finish it, let's implement the **captureAction**, **recordAction** and 
 
 #define ENABLE_DEBUG_MODE 0
 
-@interface DJICameraViewController ()<DJICameraDelegate, DJISDKManagerDelegate, DJIBaseProductDelegate, DJIVideoFeedListener>
+@interface DJICameraViewController ()<DJICameraDelegate, DJISDKManagerDelegate, DJIVideoFeedListener>
 
 ~~~
 

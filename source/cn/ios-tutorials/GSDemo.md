@@ -1,7 +1,7 @@
 ---
 title: Creating a MapView and Waypoint Application
-version: v4.1
-date: 2017-05-25
+version: v4.3.2
+date: 2017-10-17
 github: https://github.com/DJI-Mobile-SDK-Tutorials/iOS-GSDemo
 keywords: [iOS GSDemo, waypoint mission demo]
 ---
@@ -13,7 +13,15 @@ keywords: [iOS GSDemo, waypoint mission demo]
 In this tutorial, you will learn how to implement the DJIWaypoint Mission feature and get familiar with the usages of DJIMissionManager. 
 Also you will know how to test the Waypoint Mission API with DJI Assistant 2 Simulator too. So let's get started!
 
-You can download the tutorial's final sample code project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/iOS-GSDemo).
+You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/iOS-GSDemo).
+
+## Application Activation and Aircraft Binding in China
+
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
+
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
+
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).
 
 ## Setup The Map View
 
@@ -684,9 +692,9 @@ Furthermore, let's implement the **DJIFlightControllerDelegate** method:
 ~~~objc
 #pragma mark DJIFlightControllerDelegate
 
-- (void)flightController:(DJIFlightController *)fc didUpdateState:(DJIFlightControllerCurrentState *)state
+- (void)flightController:(DJIFlightController *)fc didUpdateState:(DJIFlightControllerState *)state
 {
-    self.droneLocation = state.aircraftLocation;
+    self.droneLocation = state.aircraftLocation.coordinate;
     
     self.modeLabel.text = state.flightModeString;
     self.gpsLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)state.satelliteCount];
@@ -700,7 +708,7 @@ Furthermore, let's implement the **DJIFlightControllerDelegate** method:
 }
 ~~~
 
-First, it will update the **droneLocation** with the aircraft's current location. Next, update the text for the status labels from the DJIFlightControllerCurrentState. Furthermore, update the aircraft's location and heading by calling the related methods from **DJIMapController**.
+First, it will update the **droneLocation** with the aircraft's current location. Next, update the text for the status labels from the `DJIFlightControllerState`. Furthermore, update the aircraft's location and heading by calling the related methods from **DJIMapController**.
 
 Now, let's test the application! 
 

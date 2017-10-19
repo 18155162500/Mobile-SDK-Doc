@@ -1,7 +1,7 @@
 ---
 title: DJI GEO System Tutorial
-version: v4.1.1
-date: 2017-06-06
+version: v4.3.2
+date: 2017-09-29
 github: https://github.com/DJI-Mobile-SDK-Tutorials/Android-GEODemo
 keywords: [Android GEODemo, GEO System, Fly Zone, Unlock, Authorization Fly Zone, NFZ]
 ---
@@ -12,13 +12,21 @@ keywords: [Android GEODemo, GEO System, Fly Zone, Unlock, Authorization Fly Zone
 
 In this tutorial, you will learn how to use the `FlyZoneManager` and `FlyZoneInformation` of DJI Mobile SDK to get the fly zone information, and unlock authorization fly zones.
 
-You can download the tutorial's final sample code project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/Android-GEODemo).
+You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/Android-GEODemo).
 
 We use Mavic Pro as an example to make this demo. Let's get started!
 
 ## Introduction
 
 The [Geospatial Environment Online (GEO) system](http://www.dji.com/flysafe/geo-system) is a best-in-class geospatial information system that provides drone operators with information that will help them make smart decisions about where and when to fly. It combines up-to-date airspace information, a warning and flight-restriction system, a mechanism for [unlocking](http://www.dji.com/flysafe/geo-system/unlock) (self-authorizing) drone flights in locations where flight is permitted under certain conditions, and a minimally-invasive accountability mechanism for these decisions.
+
+## Application Activation and Aircraft Binding in China
+
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
+
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
+
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).
 
 ## Implementing the UI of the Application
 
@@ -99,7 +107,7 @@ import dji.sdk.sdkmanager.DJISDKManager;
 
 Since we create this demo project using "Google Maps Activity" of Android Studio, the Google Play Services is set up automatically for you. You can now start using the Google Maps Android APIs to develop your app.
 
-To learn how to generate SHA-1 key and how to apply for an Google Maps API key in <a href="https://console.developers.google.com/apis" target="_blank">Google Developer Console</a>, please refer to the **Setting Up Google Play Services** section of [Creating a MapView and Waypoint Application](../android-tutorials/GSDemo-Google-Map.html#3-generating-sha-1-key) tutorial.
+To learn how to generate SHA-1 key and how to apply for an Google Maps API key in <a href="https://console.developers.google.com/apis" target="_blank">Google Developer Console</a>, please refer to the **Setting Up Google Play Services** section of [Creating a MapView and Waypoint Application](../android-tutorials/GSDemo-Google-Map.html#3-applying-for-an-google-api-key) tutorial.
 
 Once you finish the above step, please open the "google\_maps\_api.xml" file in the **values** folder and replace the **YOUR\_KEY_HERE** with the **Google Maps API key** you just get as shown below:
 
@@ -943,7 +951,7 @@ private DJISDKManager.SDKManagerCallback mDJISDKManagerCallback = new DJISDKMana
 
 Here, we implement several features:
   
-1. We override the `onCreate()` method to initialize the DJISDKManager.
+1. We override the `onCreate()` method to invoke the `registerApp()` method of DJISDKManager to register the application.
 2. Implement the two interface methods of SDKManagerCallback. You can use the `onRegister()` method to check the Application registration status and show text message here. Using the `onProductChange()` method, we can check the product connection status and invoke the `notifyStatusChange()` method to notify status changes.
 
 #### 3. Request Permissions in ConnectionActivity
@@ -1280,7 +1288,7 @@ Create the following variables above the `onCreate()` method as shown below:
 private Marker marker;
 private LatLng latLng;
 private double droneLocationLat = 181, droneLocationLng = 181;
-private DJIFlightController mFlightController = null;
+private FlightController mFlightController = null;
 ~~~
 
 Then add the following two methods above the `onMapReady()` method as shown below:
@@ -1337,7 +1345,7 @@ private boolean isFlightControllerSupported() {
 
 ~~~
 
-In the code above, we mainly initialize the `mFlightController` variable and implement the `setStateCallback()` method of **DJIFlightController** to invoke the `updateDroneLocation()` method to update the aircraft location on the map view when it's moving.
+In the code above, we mainly initialize the `mFlightController` variable and implement the `setStateCallback()` method of **FlightController** to invoke the `updateDroneLocation()` method to update the aircraft location on the map view when it's moving.
 
 Moreover, let's update the `onMapReady()` method with the following codes:
 

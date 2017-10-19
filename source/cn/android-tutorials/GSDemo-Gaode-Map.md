@@ -1,7 +1,7 @@
 ---
 title: Creating a MapView and Waypoint Application
-version: v4.1.1
-date: 2017-06-06
+version: v4.3.2
+date: 2017-09-29
 github: https://github.com/DJI-Mobile-SDK-Tutorials/Android-GSDemo-Gaode-Map
 keywords: [Android GSDemo, Gaode Map, waypoint mission demo]
 ---
@@ -13,7 +13,7 @@ keywords: [Android GSDemo, Gaode Map, waypoint mission demo]
 In this tutorial, you will learn how to implement the DJIWaypoint Mission feature and get familiar with the usages of MissionManager. 
 Also you will know how to test the Waypoint Mission API with DJI Assistant 2 Simulator too. So let's get started!
 
-You can download the tutorial's final sample code project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/Android-GSDemo-Gaode-Map).
+You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/Android-GSDemo-Gaode-Map).
 
 > Note: In this tutorial, we will use Mavic Pro for testing, use Android Studio 2.1.1 for developing the demo application, and use the <a href="http://lbs.amap.com" target="_blank">Gaode Map API</a> for navigating.
 
@@ -26,7 +26,15 @@ You can download the latest Android SDK from here: <a href="https://developer.dj
 ### Setup Android Development Environment
    
   Throughout this tutorial we will be using Android Studio 2.1, which you can download from here: <a href="http://developer.android.com/sdk/index.html" target="_blank">http://developer.android.com/sdk/index.html</a>.
-  
+
+## Application Activation and Aircraft Binding in China
+
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
+
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
+
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).  
+
 ## Implementing the UI of Application
 
 We can use the map view to display waypoints and show the flight route of the aircraft when waypoint mission is being executed. Here, we take Gaode Map for an example.
@@ -134,40 +142,9 @@ dependencies {
 }
 ~~~
 
-### Importing the SDK
+### Importing the Maven Dependency
 
-Unzip the Android SDK package downloaded from <a href="http://developer.dji.com/mobile-sdk/downloads/" target="_blank">DJI Developer Website</a>. Go to **File -> New -> Import Module**, enter the "API Library" folder location of the downloaded Android SDK package in the "Source directory" field. A "dJISDKLib" name will show in the "Module name" field. Press Next and Finish button to finish the settings.
-
-Next, double click on the "build.gradle(Module: app)" file to open it and add the `compile project(':dJISDKLIB')` at the bottom of **dependencies** part:
-
-~~~xml
-android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
-
-    defaultConfig {
-        ...
-        minSdkVersion 19
-        targetSdkVersion 23
-        ...
-        
-    }
-    ...
-}
-
-dependencies {
-    ...
-    compile project(':dJISDKLIB')
-}
-~~~
-
-Here we also declare the "compileSdkVersion", "buildToolsVersion", "minSdkVersion" and "targetSdkVersion". 
-
-Now let's select the **Tools -> Android -> Sync Project with Gradle Files** on the top bar and wait for Gradle project sync finish.
-
-Now, let's right click on the 'app' module in the project navigator and click "Open Module Settings" to open the Project Struture window. Navigate to the "Dependencies" tab, you should find the "dJISDKLIB" appear in the list. Your SDK environmental setup should be ready now!
-
- ![dependencies](../../images/tutorials-and-samples/Android/GSDemo-Gaode-Map/dependencies.png)
+You can check the [Integrate SDK into Application](../application-development-workflow/workflow-integrate.html#implement-app-registration-and-sdk-callbacks) tutorial to learn how to import the Android SDK Maven Dependency.
  
 ### Building the Layouts of MainActivity
 
@@ -570,7 +547,18 @@ After you finish the steps above, open the DJIDemoApplication.java file and repl
 public void onCreate() {
     super.onCreate();
     mHandler = new Handler(Looper.getMainLooper());
-    DJISDKManager.getInstance().registerApp(this, mDJISDKManagerCallback);
+
+    //Check the permissions before registering the application for android system 6.0 above.
+    int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    int permissionCheck2 = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || (permissionCheck == 0 && permissionCheck2 == 0)) {
+
+            //This is used to start SDK services and initiate SDK.
+            DJISDKManager.getInstance().registerApp(this, mDJISDKManagerCallback);
+        } else {
+            Toast.makeText(getApplicationContext(), "Please check if the permission is granted.", Toast.LENGTH_LONG).show();
+        }
+
 }
     
 private DJISDKManager.SDKManagerCallback mDJISDKManagerCallback = new DJISDKManager.SDKManagerCallback() {
@@ -614,7 +602,7 @@ private DJISDKManager.SDKManagerCallback mDJISDKManagerCallback = new DJISDKMana
 
 Here, we implement several features:
   
-1. We override the `onCreate()` method to initialize the DJISDKManager.
+1. We override the `onCreate()` method to invoke the `registerApp()` method of DJISDKManager to register the application.
 2. Implement the two interface methods of DJISDKManagerCallback. You can use the `onRegister()` method to check the Application registration status and show text message here. Using the `onProductChange()` method, we can check the product connection status and invoke the `notifyStatusChange()` method to notify status changes.
 
 Now let's build and run the project and install it to your Android device. If everything goes well, you should see the "Register Success" textView like the following screenshot when you register the app successfully.

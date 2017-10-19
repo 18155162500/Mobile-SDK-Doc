@@ -1,6 +1,6 @@
 ---
 title: Run Sample Application
-date: 2017-3-30
+date: 2017-10-17
 keywords: [quick start, generate app key, bundle id, app key, register, run sample code, run sample application, Objective C, Swift, USB connection procedure, WiFi connection procedure]
 ---
 
@@ -40,7 +40,7 @@ Download or clone the iOS Sample Github Project from: <a href="https://github.co
 
 The sample code includes both an Objective C sample project and a Swift Sample project.
 
-Since the sample code project has been integrated with [DJI iOS SDK CocoaPods](https://cocoapods.org/pods/DJI-SDK-iOS) now, please check the following steps to install **DJISDK.framework** using CocoaPods after you downloading the project:
+Since the sample project has been integrated with [DJI iOS SDK CocoaPods](https://cocoapods.org/pods/DJI-SDK-iOS) now, please check the following steps to install **DJISDK.framework** using CocoaPods after you downloading the project:
 
 **1.** Install CocoaPods
 
@@ -65,7 +65,7 @@ If you install it successfully, you should get the messages similar to the follo
 ~~~
 Analyzing dependencies
 Downloading dependencies
-Installing DJI-SDK-iOS (4.0)
+Installing DJI-SDK-iOS (4.3.2)
 Generating Pods project
 Integrating client project
 
@@ -149,7 +149,7 @@ Turn on the Remote Controller.
 
 #### WiFi Connection Procedure
 
-_Phantom 3 Standard, Phantom 3 4K:_
+_Phantom 3 Standard, Phantom 3 4K, Spark:_
 
 Turn on the Remote Controller.  
 
@@ -157,10 +157,10 @@ Turn on the Remote Controller.
 * Turn on the Aircraft and wait until the Remote Controller has connected with the Aircraft.
 * Run Sample App on the Mobile Device.
 
-_Osmo Series:_
+_Osmo Series, Mavic Pro, Spark:_
 
-Turn on the Osmo.  
+Turn on the product (Osmo or aircraft).  
 
-* Connect Mobile Device to the WiFi network created by the Osmo.
+* Connect Mobile Device to the WiFi network created by the product.
 * Run Sample App on Mobile Device.
 

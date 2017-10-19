@@ -1,8 +1,8 @@
 ---
 title: Getting Started with DJI UI Library
-version: v4.0.1
-date: 2017-06-01
-github: https://github.com/DJI-Mobile-SDK-Tutorials/xxxxx
+version: v4.3.2
+date: 2017-10-09
+github: https://github.com/DJI-Mobile-SDK-Tutorials/Android-UILibraryDemo
 keywords: [UI Library, Default Layout, playback, preview photos and videos, download photos and videos, delete photos and videos]
 
 ---
@@ -13,95 +13,77 @@ keywords: [UI Library, Default Layout, playback, preview photos and videos, down
 
 In this tutorial, you will learn how to use DJI Android UI Library and DJI Android SDK to create a fully functioning mini-DJI Go app easily, with standard DJI Go UIs and functionalities. By the end of this tutorial you will have an app that you can use to show the camera FPV view, check aircraft status, shoot photos, record videos and so on.
 
-You can download the tutorial's final sample code project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/xxxxx).
+You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/Android-UILibraryDemo).
 
 We use Mavic Pro and Nexus 5 as an example to make this demo. For more details of customizing the layouts for iPhone devices, please check the tutorial's Github Sample Project. Let's get started!
 
 ## Introduction
 
-DJI UI Library is a visual framework consisting of UI Elements. It helps you simplify the creation of DJI Mobile SDK based apps in Android. With similar design to DJI Go,UI Elements allow you to create consistent UX between your apps and DJI apps.
+DJI UI Library is a visual library consisting of UI Elements. It helps you simplify the creation of DJI Mobile SDK based apps in Android. With similar design to DJI Go,UI Elements allow you to create consistent UX between your apps and DJI apps.
 
 Additionally, with the ease of use, UILibrary let you focus more on business and application logic. 
 
 As DJI UI Library is built on top of DJI Mobile SDK and VideoPreviewer, you need to use it with them together in your application development.
 
-## Importing DJI SDK and UILibrary with AAR file
+For an in depth learning on DJI UI Library, please go to the [UI Library Introduction](../introduction/ui_library_introduction.html).
 
-**1**. Now, let's create a new project in Android Studio, open Android Studio and select **File -> New -> New Project** to create a new project, named 'UILibraryDemo'. Enter the company domain and package name (Here we use "com.dji.uilibrarydemo") you want and press Next. Set the minimum SDK version as `API 18: Android 4.3 (Jelly Bean)` for "Phone and Tablet" and press Next. Then select "Empty Activity" and press Next. Lastly, leave the Activity Name as "MainActivity", and the Layout Name as "activity_main", press "Finish" to create the project.
+## Application Activation and Aircraft Binding in China
 
-**2**. Next, download the **android-uilib-release.aar** file from this [Github link](https://github.com/dji-sdk/Mobile-UILibrary-Android/blob/master/libs/android-uilib-release.aar). Go to **File -> New -> New Module** on the Android Studio menu:
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
 
-<img src="../images/tutorials-and-samples/Android/UILibraryDemo/newModule.png" width="400">
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
 
-Choose "Import .JAR/.AAR Package" and click on "Next" button as shown below:
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).
 
-<img src="../images/tutorials-and-samples/Android/UILibraryDemo/importAAR.png" width="600">
+## Importing DJI UI Library
 
-Choose the downloaded **android-uilib-release.aar** file path in the "File name" field. A "android-uilib-release" name will show in the "Subproject name" field. Press "Finish" button to finish the settings.
+Now, open Android Studio and select **File -> New -> New Project** to create a new project, named "UILibraryDemo". Enter the company domain and package name (Here we use "com.dji.uilibrarydemo") you want and press Next. Set the minimum SDK version as `API 19: Android 4.4 (KitKat)` for "Phone and Tablet" and press Next. Then select "Empty Activity" and press Next. Lastly, leave the Activity Name as "MainActivity", and the Layout Name as "activity_main", press "Finish" to create the project.
 
-Moreover, right click on the 'app' module in the project navigator and click "Open Module Settings" to open the Project Structure window. Navigate to the "Dependencies" tab, click on the "+" sign at the bottom and select "3 Module dependency", then choose the ":android-uilib-release" module and press "OK". You should find the ":android-uilib-release" appear in the list now.
+### Import Maven Dependency
 
-<img src="../images/tutorials-and-samples/Android/UILibraryDemo/dependency.png" width="600">
+Select **File->Project Structure** in the Android Studio menu to open the "Project Structure" window. Then select the "app" module and click the **Dependencies** tab. Press the "+" button at the bottom of the window and choose "Library Dependency".
 
-**3**. Furthermore, double click on the "build.gradle(Module: app)" in the project navigator to open it and replace the content with the following:
+<img src="../images/tutorials-and-samples/Android/UILibraryDemo/libraryDependency.png" width="700">
+
+After that, search for "dji-uilibrary" and select the latest version of DJI Android UI Library and press "OK" to add the DJI Android UI Library Maven Dependency to the project.
+
+<img src="../images/tutorials-and-samples/Android/UILibraryDemo/chooseLibraryDependency.png" width="700">
+
+### Configure Gradle Script
+
+Next, double click on the "build.gradle(Module: app)" in the project navigator to open it and add the following code:
 
 ~~~java
-apply plugin: 'com.android.application'
-
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    ...
     defaultConfig {
-        applicationId "com.dji.uilibrarydemo"
-        minSdkVersion 18
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        ...
+        // Enabling multidex support.
         multiDexEnabled true
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    dexOptions {
-        javaMaxHeapSize "3g"
-    }
-    lintOptions{
-        abortOnError false
-    }
+    ...
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    testCompile 'junit:junit:4.12'
-    compile project(':android-uilib-release')
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    ...
+    compile 'com.android.support:multidex:1.0.1'
 }
 ~~~
 
-In the code above, we update the `compileSdkVersion`, `buildToolsVersion`, `targetSdkVersion` number, etc. Also, we add the "compile 'com.android.support:recyclerview-v7:23.4.0'" at the bottom of "dependencies" to add the necessary **recyclerview** library.
+In the code above, we implement the following features:
 
- ![configureAndroidSDK](../images/tutorials-and-samples/Android/UILibraryDemo/buildGradle.png)
+1. Add `multiDexEnabled true` to enable multidex support.
+2. Add `compile 'com.android.support:multidex:1.0.1'` at the bottom of **dependencies** to add the necessary **multidex** and **recyclerview** library.
 
-> Note: We also remove the **compile 'com.android.support:design:23.4.0'** in the "dependencies" to avoid getting the following errors:
-> ![configureAndroidSDK](../images/tutorials-and-samples/Android/UILibraryDemo/values_error.png)
+Once you finished the steps above, select **Tools -> Android -> Sync Project with Gradle Files** and wait for Gradle project sync to finish.
 
-Then, select the **Tools -> Android -> Sync Project with Gradle Files** on the top bar and wait for Gradle project sync finish.
+## Application Activation and Aircraft Binding in China
 
-**4**. Now, open the MainActivity.java file and add `import dji.sdk.sdkmanager.DJISDKManager;` at the bottom of the import classes section as shown below:
- 
-~~~java
-package com.dji.uilibrarydemo;
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import dji.sdk.sdkmanager.DJISDKManager;
-~~~
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
 
-Wait for a few seconds and check if the words turn red, if they remain gray color, congrats! You have imported the DJI Android SDK and DJI UI Library into your Android Studio project successfully!
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).
 
 ## Building the Default Layout using UI Library
 
@@ -392,8 +374,18 @@ Right click on the 'com.dji.uilibrarydemo' module in the project navigator and s
     public void onCreate() {
         super.onCreate();
         mHandler = new Handler(Looper.getMainLooper());
-        //This is used to start SDK services and initiate SDK.
-        DJISDKManager.getInstance().registerApp(this, mDJISDKManagerCallback);
+
+        //Check the permissions before registering the application for android system 6.0 above.
+        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionCheck2 = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || (permissionCheck == 0 && permissionCheck2 == 0)) {
+
+            //This is used to start SDK services and initiate SDK.
+            DJISDKManager.getInstance().registerApp(this, mDJISDKManagerCallback);
+        } else {
+            Toast.makeText(getApplicationContext(), "Please check if the permission is granted.", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     /**

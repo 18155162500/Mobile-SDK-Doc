@@ -86,6 +86,12 @@
 -
   title: "IOS TUTORIALS"
   list:
+    - 
+      title: "Application Activation and Aircraft Binding"
+      path: "/ios-tutorials/ActivationAndBinding.html"
+    - 
+      title: "Getting Started with UI Library"
+      path: "/ios-tutorials/UILibraryDemo.html"
     -
       title: "Application Activation and Aircraft Binding"
       path: "/ios-tutorials/ActivationAndBinding.html"
@@ -101,6 +107,9 @@
     -
       title: "Photo and Video Playback  Application"
       path: "/ios-tutorials/PlaybackDemo.html"
+    -
+      title: "Media Manager Application"
+      path: "/ios-tutorials/MediaManagerDemo.html"
     -
       title: "MapView and Waypoint Application"
       path: "/ios-tutorials/GSDemo.html"
@@ -125,6 +134,12 @@
 -
   title: "ANDROID TUTORIALS"
   list:
+    - 
+      title: "Application Activation and Aircraft Binding"
+      path: "/android-tutorials/ActivationAndBinding.html"
+    - 
+      title: "Getting Started with UI Library"
+      path: "/android-tutorials/UILibraryDemo.html"
     -
       title: "Application Activation and Aircraft Binding"
       path: "/android-tutorials/ActivationAndBinding.html"
@@ -134,6 +149,9 @@
     -
       title: "Camera Application"
       path: "/android-tutorials/index.html"
+    -
+      title: "Media Manager Application"
+      path: "/android-tutorials/MediaManagerDemo.html"
     -
       title: "MapView and Waypoint Application (GaodeMap)"
       path: "/android-tutorials/GSDemo-Gaode-Map.html"

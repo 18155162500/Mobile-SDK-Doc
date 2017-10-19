@@ -1,15 +1,15 @@
 ---
 title: Application Activation and Aircraft Binding
-version: v4.1.1
-date: 2017-06-16
-github: https://github.com/DJI-Mobile-SDK-Tutorials/xxxxx
-keywords: []
+version: v4.3.2
+date: 2017-09-29
+github: https://github.com/DJI-Mobile-SDK-Tutorials/Android-ActivationAndBindingDemo
+keywords: [Application Activation, Aircraft Binding, Link Mobile Phone Number, Bound, Activated, Real Name System]
 ---
 
 >
 > Note: This tutorial only works for applications used in **China**. The same steps can be used for activating application and binding aircraft in an existing application.
 
-You can download the tutorial's final sample code project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/xxxxx).
+You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/Android-ActivationAndBindingDemo).
 
 ## Introduction
 
@@ -23,7 +23,7 @@ DJI aircraft firmware requires mobile applications that control DJI aircraft to 
 
 - Outside of China, the SDK will automatically activate the application without requiring the user to log in.
 
-- Additionally, users in China are required to bind their aircraft to their user account in DJI Go / DJI Go 4. This is required only once. If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be **disabled**, and flight will be limited to a cylinder of 100m diameter and 30m height to ensure the aircraft stays within line of sight. 
+- Additionally, users in China are required to bind their aircraft to their user account in DJI Go / DJI Go 4. This is required only once. If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be **disabled**, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight. 
 
 ## Application Activation
 
@@ -31,13 +31,13 @@ Now, let's create a new project in Android Studio, open Android Studio and selec
 
 ### Registering the Application
 
-This demo is build based on the [ImportSDKDemo](https://github.com/DJI-Mobile-SDK-Tutorials/Android-ImportAndActivateSDKInAndroidStudio) Github Sample, you can check the [Integrate SDK into Application](./workflow-integrate.html) tutorial to learn how to import the Android SDK library and register the application using DJI Mobile SDK.
+This demo is build based on the [ImportSDKDemo](https://github.com/DJI-Mobile-SDK-Tutorials/Android-ImportAndActivateSDKInAndroidStudio) Github Sample, you can check the [Integrate SDK into Application](../application-development-workflow/workflow-integrate.html#implement-app-registration-and-sdk-callbacks) tutorial to learn how to import the Android SDK Maven Dependency and register the application using DJI Mobile SDK.
 
 ### Implementing the UI of Application
 
 #### Working on the ConnectionActivity
 
-Please check the [Creating an Camera Application](./index.html#4-implementing-connectionactivity-class) tutorial and the [sample project](https://github.com/DJI-Mobile-SDK-Tutorials/xxxxx) of this tutorial for the detail implementations.
+Please check the [Creating an Camera Application](./index.html#4-implementing-connectionactivity-class) tutorial and the [sample project](https://github.com/DJI-Mobile-SDK-Tutorials/Android-ActivationAndBindingDemo) of this tutorial for the detail implementations.
 
 #### Working on the MainActivity Class
 
@@ -420,8 +420,6 @@ Here, we implement the following features:
 2. Next, since we have added the listeners for the app activation state and aircraft binding state update in the `appActivationManager`, we also need to remove them. So in the `tearDownListener()` method, we invoke the `removeAppActivationStateListener` and `removeAircraftBindingStateListener` methods of `appActivationManager` to remove the listeners. Moreover, update the text values of `appActivationStateTV` and `bindingStateTV` textViews to "Unknown". 
 
 3. Lastly, override the `onResume()` method and invoke the `setUpListener()` to setup the listeners. Then override the `onDestroy()` method and invoke the `tearDownListener()` method to remove the listeners in `appActivationManager`.
-
-> Important: The `AppActivationState` and `AircraftBindingState` enum values in the above `onUpdate()` methods of listeners will be updated only when the actual application activation state and aircraft binding state get changed.
 
 ### Working on Login and Logout DJI User Account
 

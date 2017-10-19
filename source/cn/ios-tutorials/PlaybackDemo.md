@@ -1,8 +1,8 @@
 ---
 title: Creating a Photo and Video Playback Application
-version: v4.0.1
-date: 2017-05-11
-github: https://github.com/DJI-Mobile-SDK-Tutorials/xxxxx
+version: v4.3.2
+date: 2017-10-17
+github: https://github.com/DJI-Mobile-SDK-Tutorials/iOS-PlaybackDemo
 keywords: [iOS playback demo, playback application, preview photos and videos, download photos and videos, delete photos and videos]
 
 ---
@@ -15,9 +15,17 @@ In this tutorial, you will learn how to use DJI Mobile SDK to access the media r
 
 In order for our app to manage photos and videos, however, it must first be able to take and record them. Fortunately, by using DJI iOS UI Library, you can implement shooting photos and recording videos functionalities easily with standard DJI Go UIs.
 
-You can download the tutorial's final sample code project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/iOS-PlaybackDemo).
+You can download the tutorial's final sample project from this [Github Page](https://github.com/DJI-Mobile-SDK-Tutorials/iOS-PlaybackDemo).
 
 We use Phantom 4 and iPad Air as an example to make this demo. For more details of customizing the layouts for iPhone devices, please check the tutorial's Github Sample Project. Let's get started!
+
+## Application Activation and Aircraft Binding in China
+
+ For DJI SDK mobile application used in China, it's required to activate the application and bind the aircraft to the user's DJI account. 
+
+ If an application is not activated, the aircraft not bound (if required), or a legacy version of the SDK (< 4.1) is being used, all **camera live streams** will be disabled, and flight will be limited to a zone of 100m diameter and 30m height to ensure the aircraft stays within line of sight.
+
+ To learn how to implement this feature, please check this tutorial [Application Activation and Aircraft Binding](./ActivationAndBinding.html).
 
 ## Implementing DJI Go Style Default Layout
 
@@ -33,7 +41,7 @@ You can check [Creating a Camera Application](./index.html) tutorial to learn ho
  
 ### Working on the MainViewController and DefaultlayoutViewController
   
-You can check [Getting Started with DJI UI Library](./UILibraryDemo.html#working-on-the-mainviewcontroller-and-defaultlayoutviewcontroller) tutorial to learn how to implement the **MainViewController** to do SDK registration and update UIs and show alert views to inform users when DJI product is connected and disconnected. Also, you will learn how to implement shooting photos and recording videos functionalities with standard DJI Go UIs by using **DULDefaultLayoutViewController** of DJI UI Library.
+You can check this tutorial's Github Sample Code to learn how to implement the **MainViewController** to do SDK registration and update UIs and show alert views to inform users when DJI product is connected and disconnected. Also, you can learn how to implement shooting photos and recording videos functionalities with standard DJI Go UIs by using **DULDefaultLayoutViewController** of DJI UI Library from the [Getting Started with DJI UI Library](./UILibraryDemo.html#working-on-the-mainviewcontroller-and-defaultlayoutviewcontroller) tutorial.
 
 If everything goes well, you can see the live video feed and test the shoot photo and record video features like this:
 
@@ -51,22 +59,15 @@ Now, let's create a new file, choose the "Cocoa Touch Class" template and choose
 
 Next, open the **Main.storyboard** file and drag and drop a new "View Controller" object from the Object Library and set its "Class" value as **PlaybackViewController**. Moreover, drag and drop a new "Container View" object in the **PlaybackViewController** and set its ViewController's "Class" value as **DULFPVViewController**, which contains a `DULFPVView` and will show the live video feed directly. Furthermore, drag and drop a UIButton on the upper left corner and edit its text to "Back".
 
-~~~objc
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [[VideoPreviewer instance] setView:self.fpvPreviewView];
-    [self registerApp];
-    
-}
+Lastly, let's drag and place a UIButton on the bottom right corner of the **DefaultLayoutViewController** view and create a segue to show the **PlaybackViewController** when the user press the button.
 
 If everything goes well, you should see the storyboard layout like this:
 
-![freeform](../../images/tutorials-and-samples/iOS/UILibraryDemo/playbackStoryboard.png)
+![freeform](../../images/tutorials-and-samples/iOS/PlaybackDemo/playbackStoryboard.png)
 
 Once you finish the above steps, let's open the "DefaultLayoutViewController.m" file and replace the content with the followings:
 
-~~~
+~~~objc
 #import "DefaultLayoutViewController.h"
 #import "DemoUtility.h"
 
@@ -92,7 +93,7 @@ In the code above, we create an IBOutlet property for the `playbackBtn` and set 
 
 Next, open the "PlaybackViewController.m" file and replace the content with the followings:
 
-~~~
+~~~objc
 #import "PlaybackViewController.h"
 #import "DemoUtility.h"
 
@@ -203,7 +204,7 @@ The above code uses the `goToNextSinglePreviewPage` and `goToPreviousSinglePrevi
 
 Open the **Main.storyboard**, drag a UIView object and position it on top of the viewController, then drag a UIButton to the view you just added as a subview and named "Stop". Next, drag a UIButton object to the center of the viewController, set its image as "playVideo"(You can get this image file from the project source code, in the Images.xcassets folder).
 
- ![playbackButtons](../../images/tutorials-and-samples/iOS/UILibraryDemo/playbackButtons.png)
+ ![playbackButtons](../../images/tutorials-and-samples/iOS/PlaybackDemo/playbackButtons.png)
  
  Here we hide the **Stop** and the **playVideo** buttons. Now let's go to **PlaybackViewController.m** file and create IBOutlets and IBActions for the newly added UIs:
  
@@ -334,7 +335,7 @@ In the `playVideoBtnAction` and `stopVideoBtnAction` methods, we check if the fi
 
 Once it's done, build and run the project. Try swiping left and right in the **PlaybackViewController** to navigate through your photos and videos. If you see the play button at the center of the screen, press it to play the video. You can check the following gif animation to get the idea of how to use it:
 
- ![playVideo](../../images/tutorials-and-samples/iOS/UILibraryDemo/playVideo.gif)
+## Previewing Multiple Files
 
 ## Previewing Multiple Files
 
@@ -380,7 +381,7 @@ As shown in the code above, we can preview files in two ways: **Single Preview**
 
 We will learn how to preview multiple files here. Here is what **Multiple Preview** looks like:
 
- ![multiplePreview](../../images/tutorials-and-samples/iOS/UILibraryDemo/multiplePreview.png)
+ ![multiplePreview](../../images/tutorials-and-samples/iOS/PlaybackDemo/multiplePreview.png)
  
 You can preview at most eight files at the same time. Since the preview images are shown in the `fpvPreviewView`, you cannot interact with them yet. Let's add buttons and swipe gestures to interact with them.
 
@@ -610,7 +611,7 @@ Furthermore, we invoke the `swipeGestureAction` block's setter method and implem
 
 Once this is done, go to **Main.storyboard** and drag a **UIButton** object to the `playbackBtnsView` as subView, naming it as **Multi Pre** and positioning it as follows:
 
-![multiPreBtn](../../images/tutorials-and-samples/iOS/UILibraryDemo/multiPreBtn.png)
+![multiPreBtn](../../images/tutorials-and-samples/iOS/PlaybackDemo/multiPreBtn.png)
 
 Finally, create an IBAction method named `multiPreviewButtonClicked` and link it to the above UIButton in the **Main.storyboard**. Implement the method as shown below to enter Multiple Preview Mode:
 
@@ -625,7 +626,7 @@ Finally, create an IBAction method named `multiPreviewButtonClicked` and link it
 
 Let's build and run the project and try to enter Multiple Preview Mode. Use the swipe up and down gestures to preview files. Switch to the Single Preview Mode by pressing any of the eight preview images. Here is a screenshot:
 
-![multiPre](../../images/tutorials-and-samples/iOS/UILibraryDemo/multiPre.png)
+![multiPre](../../images/tutorials-and-samples/iOS/PlaybackDemo/multiPre.png)
 
 ## Deleting Photos and Videos
 
@@ -1176,7 +1177,7 @@ Let's build and run the project. Try to download photos in Single Preview Mode a
 
 * Download completion and photos being saved to the Photo Album:
 
-![downloadFiles2](../../images/tutorials-and-samples/iOS/UILibraryDemo/downloadFiles2.gif)
+![downloadFiles2](../../images/tutorials-and-samples/iOS/PlaybackDemo/downloadFiles2.gif)
 
 ### Summary
 
