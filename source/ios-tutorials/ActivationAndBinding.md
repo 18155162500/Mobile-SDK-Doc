@@ -20,7 +20,7 @@ To summarise the activation system:
 - Users in China are required to activate their application  by logging into their DJI account at least once every three months within the application.
 
 - Activation will be persistent in the application until the user logs out.
-- 
+
 - An internet connection will be required to log into a DJI account.
 
 - Outside of China, the SDK will automatically activate the application without requiring the user to log in.

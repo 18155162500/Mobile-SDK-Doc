@@ -335,7 +335,7 @@ In the `playVideoBtnAction` and `stopVideoBtnAction` methods, we check if the fi
 
 Once it's done, build and run the project. Try swiping left and right in the **PlaybackViewController** to navigate through your photos and videos. If you see the play button at the center of the screen, press it to play the video. You can check the following gif animation to get the idea of how to use it:
 
-## Previewing Multiple Files
+ ![playVideo](../../images/tutorials-and-samples/iOS/PlaybackDemo/playVideo.gif)
 
 ## Previewing Multiple Files
 
@@ -392,11 +392,11 @@ First, we will create a new file named "DJIPlaybackMultiSelectViewController", w
   
 Then drag a **UIView** object to the viewController as subview and set its name to "Buttons View". Next set its frame as follows:
 
-  ![buttonsViewFrame](../../images/tutorials-and-samples/iOS/UILibraryDemo/buttonsViewFrame.png)
+  ![buttonsViewFrame](../../images/tutorials-and-samples/iOS/PlaybackDemo/buttonsViewFrame.png)
   
 Moreover, drag eight **UIButton** objects to the "Buttons View" as subviews and position them as follows(You can check the demo project's **DJIPlaybackMultiSelectViewController_iPad.xib** file to get the details on how to setup these buttons's frame):
 
-  ![buttonsView](../../images/tutorials-and-samples/iOS/UILibraryDemo/buttonsView.png)
+  ![buttonsView](../../images/tutorials-and-samples/iOS/PlaybackDemo/buttonsView.png)
 
 These buttons represent eight media files when you are in the **Multiple Preview Mode**. Pressing any of these buttons will enter **Single Preview Mode**. 
 
@@ -825,11 +825,11 @@ Build and run the project, and try the select multiple files, delete single and 
 
 * Deleting a Single File:
 
-![deleteSingleFile](../../images/tutorials-and-samples/iOS/UILibraryDemo/deleteSingleFile.gif)
+![deleteSingleFile](../../images/tutorials-and-samples/iOS/PlaybackDemo/deleteSingleFile.gif)
 
 * Deleting Multiple Files:
 
-![deleteMultiFiles](../../images/tutorials-and-samples/iOS/UILibraryDemo/deleteMultiFiles.gif)
+![deleteMultiFiles](../../images/tutorials-and-samples/iOS/PlaybackDemo/deleteMultiFiles.gif)
 
 ## Downloading And Saving Photos
 
@@ -1173,7 +1173,7 @@ Let's build and run the project. Try to download photos in Single Preview Mode a
 
 * Selecting files and downloading them:
 
-![downloadFiles1](../../images/tutorials-and-samples/iOS/UILibraryDemo/downloadFiles1.gif)
+![downloadFiles1](../../images/tutorials-and-samples/iOS/PlaybackDemo/downloadFiles1.gif)
 
 * Download completion and photos being saved to the Photo Album:
 

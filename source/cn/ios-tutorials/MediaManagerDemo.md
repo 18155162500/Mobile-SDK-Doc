@@ -132,6 +132,7 @@ Next, open the "MediaManagerViewController.m" file and replace the content with 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initData];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -427,6 +428,7 @@ Next, initialize the properties in the `initData` method:
 - (void)initData
 {
     ...
+
     self.fileData = nil;
     self.selectedMedia = nil;
     self.previousOffset = 0;
@@ -463,6 +465,7 @@ Once you finish the steps above, we continue to implement the `downloadBtnAction
 
 ~~~objc
 - (IBAction)downloadBtnAction:(id)sender {
+
     BOOL isPhoto = self.selectedMedia.mediaType == DJIMediaTypeJPEG || self.selectedMedia.mediaType == DJIMediaTypeTIFF;
     WeakRef(target);
     if (self.statusAlertView == nil) {
@@ -547,6 +550,7 @@ You can check the implementations of the `showPhotoWithData:` and `savePhotoWith
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
+
     NSString* message = @"";
     if (error != NULL)
     {
@@ -558,6 +562,7 @@ You can check the implementations of the `showPhotoWithData:` and `savePhotoWith
         //Show message when save image successfully
         message = [NSString stringWithFormat:@"Saved to Photo Album"];
     }
+
     WeakRef(target);
     if (self.statusAlertView == nil) {
         self.statusAlertView = [DJIAlertView showAlertViewWithMessage:message titles:@[@"Dismiss"] action:^(NSUInteger buttonIndex) {
@@ -600,6 +605,7 @@ Once you have finished the steps above, we can continue to implement the feature
             [self.mediaList removeObjectAtIndex:indexPath.row];
             [self.mediaTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         }
+
     }];
 }
 ~~~
@@ -664,6 +670,7 @@ Now, implement the following IBAction methods:
     if (self.positionTextField.text.length) {
         second = [self.positionTextField.text floatValue];
     }
+
     WeakRef(target);
     [self.mediaManager moveToPosition:second withCompletion:^(NSError * _Nullable error) {
         WeakReturn(target);
@@ -672,6 +679,7 @@ Now, implement the following IBAction methods:
         }
         [target.positionTextField setText: @""];
     }];
+
 }
 ~~~
 
@@ -717,6 +725,7 @@ Lastly, we can show the video playback state info by implementing the following 
     }
     [stateStr appendFormat:@"Status: %@\n", [self statusToString:state.playbackStatus]];
     [stateStr appendFormat:@"Position: %f\n", state.playingPosition];
+
     [self.statusView writeStatus:stateStr];
 }
 

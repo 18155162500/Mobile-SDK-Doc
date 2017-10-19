@@ -85,6 +85,7 @@ Once you finish the above steps, open the "DefaultLayoutViewController.m" file a
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     if (IS_IPAD) {
         [self.mediaDownloadBtn setImage:[UIImage imageNamed:@"mediaDownload_icon_iPad"] forState:UIControlStateNormal];
     }else{
